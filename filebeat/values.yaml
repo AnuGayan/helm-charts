@@ -38,10 +38,9 @@ daemonset:
             matchers:
             - logs_path:
                 logs_path: "/var/log/containers/"
+      output.logstash:
+        hosts: ["${LOGSTASH_LOGSTASH_PORT_5044_TCP_ADDR}:${LOGSTASH_LOGSTASH_PORT_5044_TCP_PORT}"]
 
-      output.elasticsearch:
-        host: '${NODE_NAME}'
-        hosts: '${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}'
   # Only used when updateStrategy is set to "RollingUpdate"
   maxUnavailable: 1
   nodeSelector: {}

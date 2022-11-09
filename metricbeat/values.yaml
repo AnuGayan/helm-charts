@@ -49,7 +49,8 @@ daemonset:
         #ssl.certificate_authorities:
           #- /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
         processors:
-        - add_kubernetes_metadata: ~
+        - add_kubernetes_metadata:
+            in_cluster: tsrue
       - module: kubernetes
         enabled: true
         metricsets:
@@ -77,6 +78,9 @@ daemonset:
             system.filesystem.mount_point: '^/(sys|cgroup|proc|dev|etc|host|lib)($|/)'
       output.elasticsearch:
         hosts: '${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}'
+      setup.kibana:
+        host: "http://${KIBANA_KIBANA_SERVICE_HOST}:5601"
+
   nodeSelector: {}
   # A list of secrets and their paths to mount inside the pod
   # This is useful for mounting certificates for security other sensitive values
@@ -97,7 +101,7 @@ daemonset:
       memory: "100Mi"
     limits:
       cpu: "1000m"
-      memory: "200Mi"
+      memory: "1Gi"
   tolerations: []
 
 deployment:
